@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ToolTip from './ToolTip';
 
 export default function Clock() {
   const clockArr = Array(12)
@@ -7,6 +8,12 @@ export default function Clock() {
     .map((v, i) => i + 1);
 
   const [date, setDate] = useState(new Date());
+  const [onTooltip, setOnTooltip] = useState(false);
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [currentTime, setCurrentTime] = useState('');
 
   const hour = date.getHours();
   const min = date.getMinutes();
@@ -26,17 +33,41 @@ export default function Clock() {
     };
   }, []);
 
+  const handleMouseOver = (event: React.MouseEvent<HTMLDivElement>) => {
+    setOnTooltip(true);
+  };
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    setCurrentTime(new Date().toLocaleTimeString());
+
+    const boundingRect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - boundingRect.left;
+    const y = event.clientY - boundingRect.top;
+    setMousePosition({ x, y });
+  };
+
+  const handleMouseOut = (event: React.MouseEvent<HTMLDivElement>) => {
+    setOnTooltip(false);
+  };
+
   return (
-    <ClockWrap>
+    <ClockWrap
+      onMouseOver={handleMouseOver}
+      onMouseMove={handleMouseMove}
+      onMouseOut={handleMouseOut}
+    >
       <HourHand hourAngle={hourAngle} />
       <MinHand minAngle={minAngle} />
       <SecHand secAngle={secAngle} />
       <ClockCenter />
+
       {clockArr.map((num: number, idx: number) => (
         <ClockNum key={idx} className={`num_${num}`}>
           {num}
         </ClockNum>
       ))}
+
+      {onTooltip && <ToolTip text={currentTime} position={mousePosition} />}
     </ClockWrap>
   );
 }
