@@ -1,3 +1,5 @@
+import Clock from '../../components/Clock';
+
 export default function Main() {
-  return <div>main</div>;
+  return <Clock />;
 }
