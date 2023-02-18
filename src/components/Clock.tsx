@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 export default function Clock() {
@@ -5,11 +6,31 @@ export default function Clock() {
     .fill(undefined)
     .map((v, i) => i + 1);
 
+  const [date, setDate] = useState(new Date());
+
+  const hour = date.getHours();
+  const min = date.getMinutes();
+  const sec = date.getSeconds();
+
+  const hourAngle = (hour + min / 60) * 30;
+  const minAngle = min * 6;
+  const secAngle = sec * 6;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   return (
     <ClockWrap>
-      <HourHand />
-      <MinHand />
-      <SecHand />
+      <HourHand hourAngle={hourAngle} />
+      <MinHand minAngle={minAngle} />
+      <SecHand secAngle={secAngle} />
       <ClockCenter />
       {clockArr.map((num: number, idx: number) => (
         <ClockNum key={idx} className={`num_${num}`}>
@@ -48,28 +69,31 @@ const Hand = styled.div`
   transform-origin: bottom;
 `;
 
-const HourHand = styled(Hand)`
+const HourHand = styled(Hand)<{ hourAngle: number }>`
   width: 6px;
   height: 60px;
   top: 30%;
   left: 49%;
   background: ${({ theme }) => theme.color.dark};
+  transform: ${props => `rotate(${props.hourAngle}deg)`};
 `;
 
-const MinHand = styled(Hand)`
+const MinHand = styled(Hand)<{ minAngle: number }>`
   width: 4px;
   height: 80px;
   top: 22.5%;
   left: 49%;
   background: ${({ theme }) => theme.color.dark};
+  transform: ${props => `rotate(${props.minAngle}deg)`};
 `;
 
-const SecHand = styled(Hand)`
+const SecHand = styled(Hand)<{ secAngle: number }>`
   width: 2px;
   height: 118px;
   top: 10.5%;
   left: 50%;
   background: red;
+  transform: ${props => `rotate(${props.secAngle}deg)`};
 `;
 
 const ClockNum = styled.span`
