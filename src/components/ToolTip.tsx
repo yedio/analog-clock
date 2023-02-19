@@ -1,33 +1,33 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../types/reducer';
 
-interface Props {
-  text: string;
-  position: { x: number; y: number };
-}
+export default function ToolTip() {
+  const tooltipInfo = useSelector((state: RootState) => state.tooltipReducer);
 
-/**
- * text: 툴팁에 보여질 text
- * position: 툴팁의 위치
- **/
-
-export default function ToolTip({ text, position }: Props) {
   return (
-    <>
-      <TooltipWrap position={position}>
-        <TooltipTextWrap>
-          <TooltipText>{text}</TooltipText>
-        </TooltipTextWrap>
-      </TooltipWrap>
-    </>
+    <TooltipWrap
+      className={tooltipInfo.open ? 'on' : ''}
+      position={tooltipInfo.position}
+    >
+      <TooltipTextWrap>
+        <TooltipText>{tooltipInfo.text}</TooltipText>
+      </TooltipTextWrap>
+    </TooltipWrap>
   );
 }
 
 const TooltipWrap = styled.div<{ position: { x: number; y: number } }>`
+  display: none;
   position: fixed;
   width: fit-content;
   top: ${props => `${props.position.y + 25}px`};
   left: ${props => `${props.position.x - 5}px`};
   z-index: 10;
+
+  &.on {
+    display: inline-block;
+  }
 `;
 
 const TooltipTextWrap = styled.div`

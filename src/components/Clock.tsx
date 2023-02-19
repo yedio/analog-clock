@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import ToolTip from './ToolTip';
 
@@ -7,13 +8,8 @@ export default function Clock() {
     .fill(undefined)
     .map((v, i) => i + 1);
 
+  const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
-  const [onTooltip, setOnTooltip] = useState(false);
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
-  const [currentTime, setCurrentTime] = useState('');
 
   const hour = date.getHours();
   const min = date.getMinutes();
@@ -34,20 +30,26 @@ export default function Clock() {
   }, []);
 
   const handleMouseOver = (event: React.MouseEvent<HTMLDivElement>) => {
-    setOnTooltip(true);
+    dispatch({
+      type: 'OPEN',
+    });
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    setCurrentTime(new Date().toLocaleTimeString());
-
     const boundingRect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - boundingRect.left;
     const y = event.clientY - boundingRect.top;
-    setMousePosition({ x, y });
+
+    dispatch({
+      type: 'MOVE',
+      payload: { x, y, text: new Date().toLocaleTimeString() },
+    });
   };
 
   const handleMouseOut = (event: React.MouseEvent<HTMLDivElement>) => {
-    setOnTooltip(false);
+    dispatch({
+      type: 'CLOSE',
+    });
   };
 
   return (
@@ -67,7 +69,7 @@ export default function Clock() {
         </ClockNum>
       ))}
 
-      {onTooltip && <ToolTip text={currentTime} position={mousePosition} />}
+      <ToolTip />
     </ClockWrap>
   );
 }
