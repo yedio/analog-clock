@@ -11,15 +11,6 @@ const initialState: Type_TooltipReducer = {
   text: '',
 };
 
-// Action Type
-// const SET_TOOLTIP = 'tooltipReducer/SET_TOOLTIP';
-
-// Action Creator & Action
-// export const setTooltip = (value: Type_TooltipReducer) => ({
-//   type: SET_TOOLTIP,
-//   payload: value,
-// });
-
 // Reducer
 export default function tooltipReducer(state = initialState, action: Action) {
   switch (action.type) {

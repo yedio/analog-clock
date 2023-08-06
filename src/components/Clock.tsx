@@ -76,18 +76,19 @@ export default function Clock() {
 
 const ClockWrap = styled.div`
   position: absolute;
+  background-color: #191919;
   width: 300px;
   height: 300px;
   top: 50%;
   left: 50%;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  outline: 10px solid ${({ theme }) => theme.color.main};
+  outline: 15px solid ${({ theme }) => theme.color.main};
 `;
 
 const ClockCenter = styled.div`
   position: absolute;
-  background: ${({ theme }) => theme.color.dark};
+  background: #949297;
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -107,7 +108,7 @@ const HourHand = styled(Hand)<{ hourAngle: number }>`
   height: 60px;
   top: 30%;
   left: 49%;
-  background: ${({ theme }) => theme.color.dark};
+  background: #949297;
   transform: ${props => `rotate(${props.hourAngle}deg)`};
 `;
 
@@ -116,7 +117,7 @@ const MinHand = styled(Hand)<{ minAngle: number }>`
   height: 80px;
   top: 22.5%;
   left: 49%;
-  background: ${({ theme }) => theme.color.dark};
+  background: #949297;
   transform: ${props => `rotate(${props.minAngle}deg)`};
 `;
 
@@ -131,6 +132,7 @@ const SecHand = styled(Hand)<{ secAngle: number }>`
 
 const ClockNum = styled.span`
   position: absolute;
+  color: #949297;
   font-size: 24px;
   text-align: center;
 
@@ -145,6 +147,8 @@ const ClockNum = styled.span`
   }
 
   &.num_3 {
+    color: ${({ theme }) => theme.color.main};
+    font-size: 28px;
     right: 10px;
     top: 46%;
   }
@@ -160,6 +164,8 @@ const ClockNum = styled.span`
   }
 
   &.num_6 {
+    color: ${({ theme }) => theme.color.main};
+    font-size: 28px;
     bottom: 10px;
     left: 48%;
   }
@@ -175,6 +181,8 @@ const ClockNum = styled.span`
   }
 
   &.num_9 {
+    color: ${({ theme }) => theme.color.main};
+    font-size: 28px;
     left: 10px;
     top: 46%;
   }
@@ -190,6 +198,8 @@ const ClockNum = styled.span`
   }
 
   &.num_12 {
+    color: ${({ theme }) => theme.color.main};
+    font-size: 28px;
     top: 10px;
     left: 46%;
   }

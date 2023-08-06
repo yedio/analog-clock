@@ -55,7 +55,7 @@ export const customReset = css`
   }
 
   body {
-    background: #fff;
+    background: #272727;
     color: ${({ theme }) => theme.color.dark};
     font-size: 16px;
     font-weight: 400;
